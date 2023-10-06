@@ -68,10 +68,10 @@ Disassembly of section .text:
   7e:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
 00000082 <main>:
-#define PINC *((volatile u8*)0x33)
-#define PORTD *((u8*)0x32)
-#define DDRD *((u8*)0x31)
-#define PIND *((volatile u8*)0x30)
+// 7seg and sw
+#include "stdTypes.h"
+#include "Registers.h"
+
 
 int main(void){
   82:	df 93       	push	r29
