@@ -2,7 +2,7 @@
  * main.c
  *
  *  Created on: Feb 5, 2024
- *      Author: user
+ *      Author: samar ibrahim
  */
 
 #include "../LIB/errorStates.h"
@@ -45,12 +45,12 @@ int main(void)
 
 	DIO_enuSetPinVal(DIO_u8PORTB,DIO_u8PIN0, DIO_u8LOW);
 
-    /* Replace with your application code */
+
     while (1)
     {
     }
 }
-
+// fun to toggle led
 volatile void Toggle_Led(void *ptr)
 {
 
