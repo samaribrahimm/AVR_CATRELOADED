@@ -59,7 +59,7 @@ void main(void)
 	LCD_vidClearScreen();
 
 
-Ping_PongInit();
+    Ping_PongInit();
 
 		while(1)
 		{

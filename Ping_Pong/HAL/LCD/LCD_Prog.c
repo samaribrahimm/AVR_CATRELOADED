@@ -186,14 +186,17 @@ ES_t LCD_enuDisplayNum(s32 Copy_s32Num)
 	s32 Local_s32Reverse=0;
 	u8 Local_u8Remainder=0 , Local_u8NumDigit=0;
    u8 x=0;
+   if(Copy_s32Num ==0)
+   	{
+   		LCD_enuDisplayChar('0');
+
+   	}
 	if(Copy_s32Num <0)
 	{
 		LCD_enuDisplayChar('-');
 		Copy_s32Num *= -1 ;
 	}
-	else if(Copy_s32Num==0){
-		LCD_enuDisplayChar('0');
-	}
+
 	while (Copy_s32Num)
 	{
 		Local_u8Remainder = Copy_s32Num % 10;
