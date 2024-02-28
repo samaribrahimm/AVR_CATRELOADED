@@ -9,7 +9,8 @@
 
 #include"ADC_Priv.h"
 #include"ADC_Config.h"
-
+#include"../../HAL/LCD/LCD_int.h"
+#include"../interrupt.h"
 static volatile void (*ADC_PFuncISRFunc)(void *) = NULL;
 static volatile void *ADC_PvidISRParameter = NULL;
 ES_t ADC_enuInit(void){
@@ -214,6 +215,7 @@ ES_t ADC_enuCallBack(volatile void(*Copy_pfunAppFun)(void*),volatile void*Copy_p
 
 ISR(VECT_ADC)
 {
+
 	if(ADC_PFuncISRFunc != NULL)
 	{
 		ADC_PFuncISRFunc(ADC_PvidISRParameter);

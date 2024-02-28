@@ -32,7 +32,7 @@ extern EXTI_t EXTI_AstrEXTIConfig[3];
 
 int main(void)
 {
-	u8 ADC_Read = 0;
+	u16 ADC_Read = 0;
 	DIO_enuSetPinDirection(DIO_u8PORTA, DIO_u8PIN2, DIO_u8INPUT); //input ADC
 
 	DIO_enuSetPinDirection(DIO_u8PORTD, DIO_u8PIN2, DIO_u8INPUT); //switch
@@ -59,16 +59,22 @@ int main(void)
 
     while (1)
     {
+
+
 /*ADC_enuStartConversion();
 ADC_enuPollingSystem();
 ADC_enuReadHighValue(&ADC_Read);
-DIO_enuSetPortVal(DIO_u8PORTC, ADC_Read);*/
+DIO_enuSetPortVal(DIO_u8PORTC, ADC_Read);
+LCD_enuDisplayNum(*(s32*)ADC_Read);*/
     	//DIO_enuSetPortVal(DIO_u8PORTC, ADC_Read);
+
     }
 }
  volatile void Read_POT(void *ptr)
 {
-	ADC_enuReadHighValue(ptr);
-	LCD_enuDisplayNum(*(s32*)ptr);
+	ADC_enuReadValue(ptr);
+	u32 read=*(u16*)ptr;
+	LCD_enuDisplayNum(read);
+
 
 }
