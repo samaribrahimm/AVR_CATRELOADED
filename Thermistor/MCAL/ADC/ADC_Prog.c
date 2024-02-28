@@ -9,6 +9,7 @@
 
 #include"ADC_Priv.h"
 #include"ADC_Config.h"
+#include"../interrupt.h"
 
 static volatile void (*ADC_PFuncISRFunc)(void *) = NULL;
 static volatile void *ADC_PvidISRParameter = NULL;

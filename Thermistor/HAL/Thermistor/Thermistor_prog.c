@@ -55,13 +55,13 @@ void LM35_inlvidReadADCValue(void *Copy_PvidLM35VOLT){
 	}
 
 }
-ES_t Themistor_enuGetTemp(u8 Copy_u8_LM35_ID,f32 *Copy_f32Temp){
+ES_t Themistor_enuGetTemp(u8 Copy_u8_LM35_ID,u8 *Copy_u8Temp){
 	ES_t Local_enuErrorState = ES_NOK;
 
-		if(Copy_f32Temp != NULL)
+		if(Copy_u8Temp != NULL)
 		{
 			Local_enuErrorState = ADC_enuStartConversion();
-			*Copy_f32Temp = ((ADCValue * 5000UL / ADC_RESOLUTION) / LM35_STEP);
+			*Copy_u8Temp = (u8)(((u32)ADCValue *150*5 )/ (1023*1.5));
 		}
 		else
 		{

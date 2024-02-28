@@ -27,14 +27,19 @@ int main(void)
 {
 	LCD_enuInit();
 
-	u32 x = 0;
+	u8 temp = 0;
 	Thermistor_enuInit(LM35_AstrEXTIConfig );
+	LCD_enuWriteString("Temp:",0,0);
 
-    /* Replace with your application code */
     while (1)
     {
-    	Themistor_enuGetTemp(0,&x);
-		LCD_enuDisplayNum(x);
-		_delay_ms(1000);
+    	Themistor_enuGetTemp(0,&temp);
+
+    	LCD_enuGoToPosition(0,6);
+		LCD_enuDisplayNum(temp);
+		LCD_enuDisplayChar(' ');
+
+		_delay_ms(2000);
+		//LCD_vidClearScreen();
     }
 }
