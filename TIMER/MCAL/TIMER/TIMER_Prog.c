@@ -19,8 +19,10 @@ volatile static void * Timer0_Apvidparameter_OVF= NULL;
 
 volatile static void (*TIMER0_PFun_CTC)(void *) = NULL;
 volatile static void *TIMER0_Pvidparameter_CTC = NULL;
+
 u32 Global_u32NumOvf=0;
 u8 Global_u8Preload=0;
+u32 TIMER0_f32OC0Val=0;
 ES_t TIMER_enuInit(void){
 	ES_t Local_enuErrorState = ES_NOK;
 	TCCR0&=0xB7; //mask bit for modes
@@ -186,7 +188,92 @@ ES_t TIMER_enuSetsyncDelay(u32 Copy_u32Time){
 	return Local_enuErrorState;
 	}
 
+ES_t TIMER0_enuGeneratePWM(u8 Copy_u8DutyCycle)
+{
+	ES_t Local_enuErrorState = ES_NOK;
 
+	#if TIMER0_MODE == PWM_PHASECORRECT
+	#if OC0_MODE == NON_INVERTED
+	TIMER0_f32OC0Val = (Copy_u8DutyCycle * TIMER0_TOP_COUNTS) /100;
+	Local_enuErrorState = ES_OK;
+	#elif OC0_MODE == INVERTED
+	TIMER0_f32OC0Value = (TIMER0_TOP_COUNTS - ((Copy_u8DutyCycle * TIMER0_TOP_COUNTS) / (100));
+	Local_enuErrorState = ES_OK;
+	#else
+	#error "OC0 has a wrong config"
+	#endif
+
+	#elif TIMER0_MODE == FASTPWM
+	#if OC0_MODE == NON_INVERTED
+	TIMER0_f32OC0Value = (Copy_u8DutyCycle * TIMER0_NO_OVF_COUNTS) / 100
+	Local_enuErrorState = ES_OK;
+	#elif OC0_MODE == INVERTED
+	TIMER0_f32OC0Value = (TIMER0_TOP_COUNTS - ((Copy_u8DutyCycle * TIMER0_NO_OVF_COUNTS) / 100));
+	Local_enuErrorState = ES_OK;
+	#else
+	#error "OC0 has a wrong config"
+	#endif
+	#endif
+
+	OCR0 = TIMER0_f32OC0Val;
+
+	return Local_enuErrorState;
+}
+ES_t TIMER0_enuSetCTCVal(u8 Copy_u8CTC_Val){
+ES_t Local_enuErrorState = ES_NOK;
+
+	OCR0 = Copy_u8CTC_Val;
+	Local_enuErrorState = ES_OK;
+
+	return Local_enuErrorState;}
+
+ES_t TIMER0_enuSetCALLBACK_CTC(void (*Copy_PFunApp)(void *), void *Copy_PParameterApp)
+{
+	ES_t Local_enuErrorState = ES_NOK;
+
+	if(Copy_PFunApp != NULL)
+	{
+		TIMER0_PFun_CTC = Copy_PFunApp;
+		TIMER0_Pvidparameter_CTC = Copy_PParameterApp;
+		Local_enuErrorState = ES_OK;
+	}
+	else
+	{
+		Local_enuErrorState = ES_NULL_POINTER;
+	}
+
+	return Local_enuErrorState;
+}
+
+ES_t TIMER0_enuEnableOVFInterrupt(void)
+{
+	ES_t Local_enuErrorState = ES_NOK;
+
+	TIMSK |= (1 << TOIE0);
+	Local_enuErrorState = ES_OK;
+
+	return Local_enuErrorState;
+}
+
+ES_t TIMER0_enuEnableCTCInterrupt(void)
+{
+	ES_t Local_enuErrorState = ES_NOK;
+
+	TIMSK |= (1 << OCIE0);
+	Local_enuErrorState = ES_OK;
+
+	return Local_enuErrorState;
+}
+
+
+
+ISR(VECT_TIMER0_CTC)
+{
+	if(TIMER0_PFun_CTC != NULL)
+	{
+		TIMER0_PFun_CTC((void *)TIMER0_Pvidparameter_CTC);
+	}
+}
 ISR(VECT_TIMER0_OVF	)
 {
 	if(Timer0_ApFun_OVF != NULL)

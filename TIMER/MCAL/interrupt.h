@@ -16,6 +16,8 @@
 #define VECT_INT0			__vector_1
 #define VECT_INT1			__vector_2
 #define VECT_INT2			__vector_3
+#define VECT_TIMER1_ICU		__vector_6
+#define VECT_TIMER0_CTC		__vector_10
 #define VECT_TIMER0_OVF		__vector_11
 #define VECT_ADC			__vector_16
 
