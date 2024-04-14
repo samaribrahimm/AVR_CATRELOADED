@@ -7,7 +7,7 @@
 #include "../../LIB/stdTypes.h"
 #include "../../LIB/errorStates.h"
 
-#include "../interrupt.h"
+#include "../../MCAL/interrupt.h"
 
 #include"TIMER_priv.h"
 #include "TIMER_config.h"

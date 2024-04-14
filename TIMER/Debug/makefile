@@ -12,6 +12,8 @@ RM := rm -rf
 -include MCAL/GIE/subdir.mk
 -include MCAL/EXTI/subdir.mk
 -include MCAL/DIO/subdir.mk
+-include LED/subdir.mk
+-include APP/subdir.mk
 -include subdir.mk
 -include objects.mk
 

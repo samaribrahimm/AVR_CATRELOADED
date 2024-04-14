@@ -4,7 +4,8 @@
  *  Created on: Oct 12, 2023
  *      Author: samar ibrahim
  */
-
+#include "../../LIB/stdTypes.h"
+#include "../../LIB/errorStates.h"
 #ifndef DIO_INT_H_
 #define DIO_INT_H_
 

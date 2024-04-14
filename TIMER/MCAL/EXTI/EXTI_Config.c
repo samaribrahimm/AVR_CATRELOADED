@@ -13,7 +13,7 @@
 
 EXTI_t EXTI_AstrEXTIConfig [3] =
 {
-		{ENABLE, FALLING_EDGE},
+		{ENABLE, RISING_EDGE},
 		{DISABLE},
 		{DISABLE}
 };
