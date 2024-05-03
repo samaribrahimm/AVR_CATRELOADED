@@ -8,7 +8,7 @@
 #ifndef LED_CONFIG_H_
 #define LED_CONFIG_H_
 
-#define LED_NUM  6
+#define LED_NUM 3
 typedef struct{
 
 	    u8 LED_u8PortID ;

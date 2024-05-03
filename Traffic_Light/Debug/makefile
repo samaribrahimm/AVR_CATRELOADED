@@ -4,7 +4,7 @@
 
 -include ../makefile.init
 
-RM := rm -rf
+RM := rm -f
 
 # All of the sources participating in the build are defined here
 -include sources.mk
@@ -12,7 +12,7 @@ RM := rm -rf
 -include MCAL/GIE/subdir.mk
 -include MCAL/EXTI/subdir.mk
 -include MCAL/DIO/subdir.mk
--include HAL/LED/subdir.mk
+-include HAL/subdir.mk
 -include APP/subdir.mk
 -include subdir.mk
 -include objects.mk
@@ -36,38 +36,38 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 LSS += \
-Traffic_Light.lss \
+libTrafficLight.lss \
 
 SIZEDUMMY += \
 sizedummy \
 
 
 # All Target
-all: Traffic_Light.elf secondary-outputs
+all: libTrafficLight.a secondary-outputs
 
 # Tool invocations
-Traffic_Light.elf: $(OBJS) $(USER_OBJS)
+libTrafficLight.a: $(OBJS)
 	@echo 'Building target: $@'
-	@echo 'Invoking: AVR C Linker'
-	avr-gcc -Wl,-Map,Traffic_Light.map -mmcu=atmega32 -o "Traffic_Light.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	@echo 'Invoking: AVR Archiver'
+	avr-ar -r  "libTrafficLight.a" $(OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-Traffic_Light.lss: Traffic_Light.elf
+libTrafficLight.lss: libTrafficLight.a
 	@echo 'Invoking: AVR Create Extended Listing'
-	-avr-objdump -h -S Traffic_Light.elf  >"Traffic_Light.lss"
+	-avr-objdump -h -S libTrafficLight.a  >"libTrafficLight.lss"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-sizedummy: Traffic_Light.elf
+sizedummy: libTrafficLight.a
 	@echo 'Invoking: Print Size'
-	-avr-size --format=avr --mcu=atmega32 Traffic_Light.elf
+	-avr-size --format=avr --mcu=atmega32 libTrafficLight.a
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(ELFS)$(OBJS)$(ASM_DEPS)$(S_DEPS)$(SIZEDUMMY)$(S_UPPER_DEPS)$(LSS)$(C_DEPS) Traffic_Light.elf
+	-$(RM) $(OBJS)$(ARCHIVES)$(ASM_DEPS)$(S_DEPS)$(SIZEDUMMY)$(S_UPPER_DEPS)$(LSS)$(C_DEPS) libTrafficLight.a
 	-@echo ' '
 
 secondary-outputs: $(LSS) $(SIZEDUMMY)

@@ -23,7 +23,7 @@ volatile static void *TIMER0_Pvidparameter_CTC = NULL;
 u32 Global_u32NumOvf=0;
 u8 Global_u8Preload=0;
 u32 TIMER0_f32OC0Val=0;
-ES_t TIMER_enuInit(void){
+ES_t TIMER0_enuInit(void){
 	ES_t Local_enuErrorState = ES_NOK;
 	TCCR0&=0xB7; //mask bit for modes
 
@@ -118,14 +118,14 @@ ES_t TIMER_enuInit(void){
 
 return Local_enuErrorState;
 }
-ES_t TIMER_enuSetPreload(u8 Copy_u8Preload){
+ES_t TIMER0_enuSetPreload(u8 Copy_u8Preload){
 	ES_t Local_enuErrorState = ES_NOK;
 	TCNT0=Copy_u8Preload;
 	Local_enuErrorState = ES_OK;
 	return Local_enuErrorState;
 }
 //fun for interrupt
-ES_t TIMER_enuSetAsyncDelay(u32 Copy_u32Time,void (*Copy_pfunAppFun)(void*),void * Copy_pvidParameter){
+ES_t TIMER0_enuSetAsyncDelay(u32 Copy_u32Time,void (*Copy_pfunAppFun)(void*),void * Copy_pvidParameter){
 	ES_t Local_enuErrorState = ES_NOK;
 
 		f32 Local_f32TimeOvf=256 * ((f32)TIMER_PRES/TIMER_F_CPU); //cal Time of overflow
@@ -161,17 +161,21 @@ ES_t TIMER_enuSetAsyncDelay(u32 Copy_u32Time,void (*Copy_pfunAppFun)(void*),void
 
 
 //fun busy wait
-ES_t TIMER_enuSetsyncDelay(u32 Copy_u32Time){
+
+ES_t TIMER0_enuSetsyncDelay(u32 Copy_u32Time){
 	ES_t Local_enuErrorState = ES_NOK;
 	TIMSK&=~(1<<TOIE0); //disable for interrupt
 	f32 Local_f32TimeOvf=256 * ((f32)TIMER_PRES/TIMER_F_CPU); //cal Time of overflow
-	f32 Local_f32NumOvf= Copy_u32Time/Local_f32TimeOvf;      // cal Number of overflow
+	f32 Local_f32NumOvf= (f32)Copy_u32Time/Local_f32TimeOvf; // cal Number of overflow
+
 	if((Local_f32NumOvf-(u32)Local_f32NumOvf)!=0.0){
+
 		u32 Local_u32NumOvf_int=(u32)Local_f32NumOvf+1;
 		Local_f32NumOvf=Local_f32NumOvf-(u32)Local_f32NumOvf;
 		u8 Local_u8Preload=256-(256*Local_f32NumOvf);
 		TCNT0=Local_u8Preload;
-		while(Local_u32NumOvf_int>0){
+
+		while(Local_u32NumOvf_int){
 			while(!((TIFR >> TOV0) & 1));
 						TIFR |= (1 << TOV0);   //clear flag
 						Local_u32NumOvf_int--;
@@ -179,7 +183,7 @@ ES_t TIMER_enuSetsyncDelay(u32 Copy_u32Time){
 	}
 		else {
 			u32 Local_u32NumOvf_int=(u32)Local_f32NumOvf;
-			while(Local_u32NumOvf_int>0){
+			while(Local_u32NumOvf_int){
 					while(!((TIFR >> TOV0) & 1));
 								TIFR |= (1 << TOV0);  //clear flag
 								Local_u32NumOvf_int--;
@@ -187,6 +191,8 @@ ES_t TIMER_enuSetsyncDelay(u32 Copy_u32Time){
 		}
 	return Local_enuErrorState;
 	}
+
+
 
 ES_t TIMER0_enuGeneratePWM(u8 Copy_u8DutyCycle)
 {

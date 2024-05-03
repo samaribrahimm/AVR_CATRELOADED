@@ -5,13 +5,13 @@
  *      Author: samar ibrahim
  *
  */
-#include "../../LIB/stdTypes.h"
-#include "../../LIB/errorStates.h"
+#include "../LIB/stdTypes.h"
+#include "../LIB/errorStates.h"
 
 #include "LED_config.h"
 #include "LED_priv.h"
 
-#include "../../MCAL/DIO/DIO_int.h"
+#include "../MCAL/DIO/DIO_int.h"
 
 ES_t LED_enuInit(LED_t * Copy_pstrLedConfig)
 {

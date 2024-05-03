@@ -8,8 +8,8 @@ ASM_SRCS :=
 C_SRCS := 
 S_UPPER_SRCS := 
 O_SRCS := 
-ELFS := 
 OBJS := 
+ARCHIVES := 
 ASM_DEPS := 
 S_DEPS := 
 SIZEDUMMY := 
@@ -20,7 +20,7 @@ C_DEPS :=
 # Every subdirectory with source files must be described here
 SUBDIRS := \
 APP \
-HAL/LED \
+HAL \
 MCAL/DIO \
 MCAL/EXTI \
 MCAL/GIE \
